@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Platinum Glam by Shiv</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Quicksand:wght@300;400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#c9a84c;--gold2:#f0c040;--gold3:#7a5c1e;
+  --black:#0a0a0a;--black2:#141414;--black3:#1e1e1e;--black4:#2a2a2a;
+  --text:#f5e6c8;--muted:#9a845a;--white:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--text);font-family:'Quicksand',sans-serif;overflow-x:hidden;padding-bottom:70px;}
+
+/* GOLD SHIMMER BG */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle,rgba(201,168,76,0.07) 1px,transparent 1px);
+  background-size:40px 40px;opacity:1;}
+
+/* TOPBAR */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(10,10,10,0.97);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--gold3);padding:13px 20px;
+  display:flex;align-items:center;justify-content:center;}
+.topbar-brand{font-family:'Great Vibes',cursive;font-size:30px;
+  background:linear-gradient(135deg,var(--gold3),var(--gold),var(--gold2),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer;}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:rgba(10,10,10,0.98);backdrop-filter:blur(16px);
+  border-top:1px solid var(--gold3);
+  display:flex;justify-content:space-around;align-items:center;padding:8px 0 10px;}
+.bn-item{display:flex;flex-direction:column;align-items:center;gap:3px;
+  cursor:pointer;padding:4px 10px;border-radius:12px;transition:background 0.2s;border:none;background:none;}
+.bn-item.active .bn-icon{background:linear-gradient(135deg,var(--gold3),var(--gold));color:#000;}
+.bn-item.active .bn-label{color:var(--gold);}
+.bn-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:18px;background:var(--black3);transition:all 0.3s;}
+.bn-label{font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);transition:color 0.3s;}
+
+/* PAGES */
+.page{display:none;padding:72px 0 20px;min-height:100vh;position:relative;z-index:1;}
+.page.active{display:block;animation:fadeUp 0.35s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+
+/* SEC HEADER */
+.sec-hd{text-align:center;padding:20px 20px 14px;}
+.sec-lbl{font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(22px,5vw,32px);font-weight:700;color:var(--text);}
+.sec-title em{font-style:italic;background:linear-gradient(135deg,var(--gold3),var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+/* GOLD CARD */
+.g-card{background:var(--black2);border:1px solid var(--gold3);border-radius:18px;overflow:hidden;margin-bottom:16px;box-shadow:0 4px 24px rgba(201,168,76,0.08);}
+.g-card-hd{padding:16px 20px;background:linear-gradient(135deg,#1a1508,#0f0d08);border-bottom:1px solid var(--gold3);}
+.g-card-hd h3{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--gold);}
+.g-card-hd p{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* GOLD BTN */
+.gold-btn{display:block;width:100%;
+  background:linear-gradient(135deg,var(--gold3),var(--gold),var(--gold2));color:#0a0a0a;
+  font-family:'Quicksand',sans-serif;font-size:12px;font-weight:800;
+  letter-spacing:0.12em;text-transform:uppercase;padding:13px;border-radius:50px;
+  border:none;cursor:pointer;box-shadow:0 6px 20px rgba(201,168,76,0.3);transition:all 0.3s;text-decoration:none;text-align:center;}
+.gold-btn:hover{opacity:0.9;transform:translateY(-1px);}
+.gold-btn-outline{display:inline-block;background:transparent;color:var(--gold);
+  font-family:'Quicksand',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;padding:10px 20px;border-radius:50px;
+  border:1.5px solid var(--gold3);cursor:pointer;transition:all 0.3s;}
+.gold-btn-outline:hover{background:var(--gold3);}
+.gold-btn-outline:disabled{opacity:0.3;cursor:not-allowed;}
+
+/* INPUT */
+.cg{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;}
+.cg label{font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);}
+.cg input,.cg select,.cg textarea{background:#1a1508;border:1px solid var(--gold3);color:var(--text);
+  font-family:'Quicksand',sans-serif;font-size:13px;padding:10px 14px;border-radius:10px;outline:none;transition:border-color 0.3s;width:100%;}
+.cg input:focus,.cg select:focus,.cg textarea:focus{border-color:var(--gold);}
+.cg select option{background:#1a1508;}
+
+/* ── HOME ── */
+.hero{text-align:center;padding:14px 24px 28px;position:relative;overflow:hidden;}
+.hero-blob{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;}
+.blob1{width:300px;height:300px;background:rgba(201,168,76,0.08);top:-60px;left:-80px;}
+.blob2{width:240px;height:240px;background:rgba(201,168,76,0.06);bottom:-40px;right:-60px;}
+.hero-inner{position:relative;z-index:1;}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:var(--black3);
+  border:1px solid var(--gold3);border-radius:40px;padding:7px 18px;
+  font-size:11px;font-weight:600;color:var(--gold);margin-bottom:14px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(36px,9vw,64px);
+  font-weight:700;line-height:1;margin-bottom:10px;
+  background:linear-gradient(135deg,var(--gold3),var(--gold),var(--gold2),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-family:'Great Vibes',cursive;font-size:clamp(18px,4vw,28px);color:var(--muted);margin-bottom:12px;}
+.hero-desc{font-size:12px;line-height:1.8;color:var(--muted);max-width:320px;margin:0 auto 18px;}
+.hero-pills{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;}
+.hpill{font-size:11px;font-weight:600;background:var(--black3);
+  color:var(--gold);border:1px solid var(--gold3);padding:6px 14px;border-radius:40px;}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:0 20px 24px;}
+.stat-box{background:var(--black2);border:1px solid var(--gold3);border-radius:14px;padding:16px 10px;text-align:center;}
+.stat-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;
+  background:linear-gradient(135deg,var(--gold3),var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stat-lbl{font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+
+/* HOME PREVIEW SECTIONS */
+.home-sec{padding:0 20px 24px;}
+.home-sec-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.home-sec-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--gold3),transparent);}
+
+/* SERVICE ITEM */
+.svc-item{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px dashed var(--gold3);}
+.svc-item:last-child{border-bottom:none;}
+.svc-name{font-size:13px;font-weight:600;color:var(--text);}
+.svc-name small{display:block;font-size:10px;color:var(--muted);font-weight:400;margin-top:2px;}
+.svc-price{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--gold);margin-left:10px;white-space:nowrap;}
+
+/* TABS */
+.svc-tabs{display:flex;gap:10px;padding:0 20px 18px;overflow-x:auto;scrollbar-width:none;}
+.svc-tabs::-webkit-scrollbar{display:none;}
+.svc-tab{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:6px;
+  background:var(--black2);border:1px solid var(--gold3);border-radius:14px;
+  padding:12px 16px;cursor:pointer;transition:all 0.3s;min-width:80px;}
+.svc-tab.active{background:linear-gradient(135deg,var(--gold3),var(--gold));border-color:transparent;}
+.svc-tab.active .tab-lbl{color:#000;}
+.tab-icon{font-size:22px;}
+.tab-lbl{font-size:10px;font-weight:700;color:var(--muted);text-align:center;}
+.svc-tab.active .tab-lbl{color:#000;}
+.svc-panel{display:none;}
+.svc-panel.active{display:block;}
+
+/* COURSE CARD */
+.cc{background:var(--black2);border:1px solid var(--gold3);border-radius:18px;margin-bottom:18px;overflow:hidden;box-shadow:0 4px 20px rgba(201,168,76,0.08);}
+.cc-top{padding:18px 20px;background:linear-gradient(135deg,#1a1508,#0f0d08);border-bottom:1px solid var(--gold3);}
+.cc-badge{display:inline-block;background:linear-gradient(135deg,var(--gold3),var(--gold2));color:#0a0a0a;
+  font-size:11px;font-weight:800;padding:5px 14px;border-radius:30px;margin-bottom:10px;}
+.cc-top h3{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.cc-top p{font-size:11px;color:var(--muted);}
+.cc-price-row{display:flex;align-items:center;justify-content:space-between;margin-top:12px;}
+.cc-price{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;
+  background:linear-gradient(135deg,var(--gold3),var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.cc-days{background:var(--black3);color:var(--gold);font-size:11px;font-weight:700;padding:6px 14px;border-radius:30px;border:1px solid var(--gold3);}
+.cc-body{padding:16px 20px 20px;}
+.cc-includes{font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.cc-list{list-style:none;}
+.cc-list li{font-size:12px;color:var(--muted);padding:4px 0;display:flex;gap:8px;line-height:1.5;}
+.cc-list li::before{content:'✦';font-size:9px;color:var(--gold);margin-top:4px;flex-shrink:0;}
+
+/* CONTACT */
+.contact-card{background:var(--black2);border:1px solid var(--gold3);border-radius:18px;overflow:hidden;margin-bottom:14px;box-shadow:0 4px 18px rgba(201,168,76,0.08);}
+.contact-item{display:flex;align-items:center;gap:16px;padding:16px 20px;cursor:pointer;transition:background 0.2s;text-decoration:none;}
+.contact-item:active{background:rgba(201,168,76,0.05);}
+.contact-item+.contact-item{border-top:1px dashed var(--gold3);}
+.ci-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;background:var(--black3);border:1px solid var(--gold3);}
+.ci-info{flex:1;}
+.ci-label{font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:2px;}
+.ci-val{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--text);}
+.ci-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.ci-arrow{font-size:18px;color:var(--gold);}
+
+/* STUDENTS PAGE */
+.students-wrap{padding:0 20px 20px;}
+.student-card{background:var(--black2);border:1px solid var(--gold3);border-radius:14px;padding:16px;margin-bottom:12px;position:relative;}
+.sc-name{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--gold);margin-bottom:4px;}
+.sc-info{font-size:12px;color:var(--muted);line-height:1.8;}
+.sc-badge{display:inline-block;background:var(--black3);color:var(--gold);font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid var(--gold3);margin-top:6px;}
+.sc-actions{display:flex;gap:8px;margin-top:10px;}
+.sc-btn{font-size:10px;font-weight:700;padding:7px 14px;border-radius:30px;border:none;cursor:pointer;font-family:'Quicksand',sans-serif;letter-spacing:0.08em;}
+.sc-btn.edit{background:var(--black3);color:var(--gold);border:1px solid var(--gold3);}
+.sc-btn.del{background:#2a0a0a;color:#f87171;border:1px solid #7f1d1d;}
+.sc-btn.cert{background:linear-gradient(135deg,var(--gold3),var(--gold));color:#000;}
+.empty-state{text-align:center;padding:50px 20px;}
+.empty-state .es-icon{font-size:44px;margin-bottom:12px;}
+.empty-state p{font-size:13px;color:var(--muted);}
+.search-bar{padding:0 20px 16px;}
+.search-bar input{background:var(--black2);border:1px solid var(--gold3);color:var(--text);
+  font-family:'Quicksand',sans-serif;font-size:13px;padding:11px 16px 11px 40px;border-radius:12px;outline:none;width:100%;transition:border-color 0.3s;}
+.search-bar input:focus{border-color:var(--gold);}
+.search-wrap{position:relative;}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:500;display:none;align-items:flex-end;justify-content:center;padding:0 0 0 0;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--black2);border:1px solid var(--gold3);border-radius:24px 24px 0 0;width:100%;max-width:600px;max-height:92vh;overflow-y:auto;padding:24px 20px 32px;}
+.modal-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.modal-hd h3{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--gold);}
+.modal-close{background:var(--black3);border:1px solid var(--gold3);color:var(--gold);width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:400px){.grid2{grid-template-columns:1fr;}}
+
+/* CERT PAGE */
+.cert-page-wrap{padding:0 16px 20px;}
+.cert-preview-outer{background:var(--black2);border:1px solid var(--gold3);border-radius:18px;overflow:hidden;padding:14px;box-shadow:0 6px 28px rgba(201,168,76,0.12);}
+.cert-no-data{text-align:center;padding:50px 24px;}
+.cert-no-data .nd-icon{font-size:44px;margin-bottom:12px;}
+.cert-no-data p{font-size:13px;color:var(--muted);}
+.dl-row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+.dl-status{font-size:11px;font-weight:600;color:var(--gold);margin-top:6px;display:none;}
+
+/* ── CERTIFICATE DESIGN ── */
+.certificate{background:#fff;color:#1a0a00;font-family:'Quicksand',sans-serif;position:relative;border:8px solid #c9a84c;}
+.cert-inner-border{border:2px solid #e8c96a;margin:5px;display:flex;flex-direction:column;}
+.corner-ornament{position:absolute;width:40px;height:40px;z-index:2;}
+.corner-ornament.tl{top:8px;left:8px;}
+.corner-ornament.tr{top:8px;right:8px;transform:scaleX(-1);}
+.corner-ornament.bl{bottom:8px;left:8px;transform:scaleY(-1);}
+.corner-ornament.br{bottom:8px;right:8px;transform:scale(-1,-1);}
+.cert-banner{background:linear-gradient(135deg,#0a0800,#1a1200,#0a0800);text-align:center;padding:18px 24px 14px;border-bottom:2px solid #c9a84c;}
+.cert-logo-text{font-family:'Great Vibes',cursive;font-size:30px;background:linear-gradient(135deg,#7a5c1e,#c9a84c,#f0c040,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.cert-logo-orn{font-size:11px;color:#9a845a;letter-spacing:0.2em;margin-top:3px;}
+.cert-body{padding:18px 28px 16px;flex:1;background:#fff;}
+.cert-presents{text-align:center;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:#7a5c1e;margin-bottom:5px;font-weight:700;}
+.cert-student-name{text-align:center;font-family:'Great Vibes',cursive;font-size:40px;color:#7a5c1e;line-height:1.1;margin-bottom:4px;}
+.cert-uline{width:220px;height:2px;background:linear-gradient(to right,transparent,#c9a84c,transparent);margin:0 auto 10px;}
+.cert-completed{text-align:center;font-size:9px;color:#7a5c1e;letter-spacing:0.1em;margin-bottom:4px;font-weight:700;text-transform:uppercase;}
+.cert-course-title{text-align:center;font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:#1a0a00;line-height:1.5;margin-bottom:12px;}
+.cert-dur-strip{text-align:center;margin-bottom:14px;}
+.cert-dur-badge{display:inline-block;background:linear-gradient(135deg,#0a0800,#1a1200);color:#c9a84c;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:7px 22px;border-radius:30px;border:1.5px solid #c9a84c;}
+.cert-meta{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin-bottom:14px;padding:10px 0;border-top:1px solid #f0e4b0;border-bottom:1px solid #f0e4b0;}
+.cm-it{text-align:center;}
+.cm-lbl{font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:#7a5c1e;margin-bottom:2px;font-weight:700;}
+.cm-val{font-family:'Playfair Display',serif;font-size:11px;font-weight:700;color:#1a0a00;}
+.sig-sec{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;padding-top:12px;border-top:1px dashed #e8c96a;}
+.sig-blk{text-align:center;}
+.sig-line{border-bottom:1.5px solid #c9a84c;margin:0 10px 4px;height:38px;}
+.sig-nm{font-size:9px;font-weight:700;color:#1a0a00;margin-bottom:1px;}
+.sig-rl{font-size:8px;color:#7a5c1e;}
+.cert-footer{background:linear-gradient(135deg,#0a0800,#1a1200);text-align:center;padding:8px;font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:#9a845a;}
+
+/* PASSWORD GATE */
+.pwd-gate{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:999;display:flex;align-items:center;justify-content:center;padding:24px;}
+.pwd-box{background:var(--black2);border:1px solid var(--gold3);border-radius:20px;padding:32px 24px;width:100%;max-width:340px;text-align:center;}
+.pwd-box h2{font-family:'Great Vibes',cursive;font-size:28px;color:var(--gold);margin-bottom:6px;}
+.pwd-box p{font-size:12px;color:var(--muted);margin-bottom:20px;}
+.pwd-box input{background:#1a1508;border:1px solid var(--gold3);color:var(--text);font-family:'Quicksand',sans-serif;font-size:14px;padding:12px 16px;border-radius:10px;outline:none;width:100%;margin-bottom:12px;text-align:center;letter-spacing:0.2em;}
+.pwd-box input:focus{border-color:var(--gold);}
+.pwd-err{font-size:11px;color:#f87171;margin-top:6px;display:none;}
+
+/* TOAST */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--black2);border:1px solid var(--gold3);color:var(--gold);
+  padding:10px 20px;border-radius:30px;font-size:12px;font-weight:600;
+  z-index:600;opacity:0;transition:all 0.3s;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<!-- ADMIN LOCK MODAL (for Students page) -->
+<div class="modal-overlay" id="adminLockModal">
+  <div class="modal" style="border-radius:20px;max-width:340px;margin:auto;">
+    <div class="modal-hd">
+      <h3>🔐 Admin Access</h3>
+      <button class="modal-close" onclick="document.getElementById('adminLockModal').classList.remove('open')">✕</button>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:16px;">Students records are private. Enter admin password to continue.</p>
+    <div class="cg"><label>Password</label><input type="password" id="adminPwdInput" placeholder="Enter password" onkeydown="if(event.key==='Enter')checkAdminPwd()"></div>
+    <button class="gold-btn" style="margin-top:6px;" onclick="checkAdminPwd()">✦ Unlock</button>
+    <div class="pwd-err" id="adminPwdErr" style="margin-top:8px;">❌ Incorrect password.</div>
+  </div>
+</div>
+
+<!-- CERT DOWNLOAD CODE MODAL -->
+<div class="modal-overlay" id="certCodeModal">
+  <div class="modal" style="border-radius:20px;max-width:340px;margin:auto;">
+    <div class="modal-hd">
+      <h3>🔑 Enter Download Code</h3>
+      <button class="modal-close" onclick="document.getElementById('certCodeModal').classList.remove('open')">✕</button>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:16px;">Enter the certificate download code to save this certificate.</p>
+    <div class="cg"><label>Download Code</label><input type="password" id="certCodeInput" placeholder="Enter code" onkeydown="if(event.key==='Enter')checkCertCode()"></div>
+    <button class="gold-btn" style="margin-top:6px;" onclick="checkCertCode()">✦ Download</button>
+    <div class="pwd-err" id="certCodeErr" style="margin-top:8px;">❌ Incorrect code.</div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-brand" id="brandLogo">Platinum Glam by Shiv 💕</div>
+</div>
+
+<!-- ═══════════════ HOME ═══════════════ -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-blob blob1"></div>
+    <div class="hero-blob blob2"></div>
+    <div class="hero-inner">
+      <div class="hero-tag">🌸 Est. Pondicherry · Beauty Studio</div>
+      <h1>Platinum<br><em style="font-style:italic">Glam</em></h1>
+      <p class="hero-sub">Where Beauty Meets Artistry ✨</p>
+      <p class="hero-desc">Professional Bridal & Party Makeup · Hair Styling · Saree Draping<br>Serving Pondicherry & Chennai 💛</p>
+      <div class="hero-pills">
+        <span class="hpill">💍 Bridal</span>
+        <span class="hpill">💇 Hair</span>
+        <span class="hpill">🥻 Saree</span>
+        <span class="hpill">🎓 Training</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="stat-num">2</div>
+      <div class="stat-lbl">Courses</div>
+    </div>
+  </div>
+
+  <!-- SERVICES PREVIEW -->
+  <div class="home-sec">
+    <div class="home-sec-title">💄 Services</div>
+    <div class="g-card">
+      <div class="svc-item"><div class="svc-name">Kids Makeup</div><div class="svc-price">₹1,000</div></div>
+      <div class="svc-item"><div class="svc-name">Party Glam</div><div class="svc-price">₹2,000</div></div>
+      <div class="svc-item"><div class="svc-name">Traditional Bridal</div><div class="svc-price">₹12,000</div></div>
+      <div class="svc-item"><div class="svc-name">HD Airbrush Bridal</div><div class="svc-price">₹16,500</div></div>
+      <div class="svc-item"><div class="svc-name">Bridal Hair Do</div><div class="svc-price">₹5,000</div></div>
+      <div class="svc-item"><div class="svc-name">Saree Draping</div><div class="svc-price">₹1,000</div></div>
+    </div>
+    <button class="gold-btn-outline" onclick="showPage('services',document.querySelectorAll('.bn-item')[1])">View All Services →</button>
+  </div>
+
+  <!-- COURSES PREVIEW -->
+  <div class="home-sec">
+    <div class="home-sec-title">🎓 Courses</div>
+    <div class="g-card">
+      <div class="g-card-hd"><h3>8-Day Premium Course</h3><p>Makeup · Hair · Saree — ₹8,000</p></div>
+      <div style="padding:12px 20px 14px;font-size:12px;color:var(--muted);">Complete professional training with certificate. New batch every month.</div>
+    </div>
+    <div class="g-card">
+      <div class="g-card-hd"><h3>5-Day Foundation Course</h3><p>Makeup · Hair · Saree — ₹4,000</p></div>
+      <div style="padding:12px 20px 14px;font-size:12px;color:var(--muted);">Essential skills for beginners. Includes certificate of completion.</div>
+    </div>
+    <button class="gold-btn-outline" onclick="showPage('courses',document.querySelectorAll('.bn-item')[2])">View All Courses →</button>
+  </div>
+
+  <!-- CONTACT PREVIEW -->
+  <div class="home-sec">
+    <div class="home-sec-title">💌 Contact</div>
+    <div class="contact-card">
+      <a class="contact-item" href="tel:+919342812428">
+        <div class="ci-icon">📞</div>
+        <div class="ci-info"><div class="ci-label">Call Directly</div><div class="ci-val">9342812428</div></div>
+        <div class="ci-arrow">›</div>
+      </a>
+      <a class="contact-item" href="https://wa.me/919342812428?text=Hi%20Shiv!%20I%20would%20like%20to%20book%20an%20appointment%20🌸" target="_blank">
+        <div class="ci-icon">💬</div>
+        <div class="ci-info"><div class="ci-label">WhatsApp</div><div class="ci-val">Chat & Book</div></div>
+        <div class="ci-arrow">›</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SERVICES ═══════════════ -->
+<div class="page" id="page-services">
+  <div class="sec-hd"><p class="sec-lbl">✨ What We Offer</p><h2 class="sec-title">Our <em>Services</em></h2></div>
+  <div class="svc-tabs">
+    <div class="svc-tab active" onclick="showSvc('makeup',this)"><div class="tab-icon">💄</div><div class="tab-lbl">Makeup</div></div>
+    <div class="svc-tab" onclick="showSvc('hair',this)"><div class="tab-icon">💇</div><div class="tab-lbl">Hair</div></div>
+    <div class="svc-tab" onclick="showSvc('saree',this)"><div class="tab-icon">🥻</div><div class="tab-lbl">Saree</div></div>
+  </div>
+  <div style="padding:0 20px 20px;">
+    <div class="svc-panel active" id="svc-makeup">
+      <div class="g-card">
+        <div class="g-card-hd"><h3>💄 Makeup Services</h3><p>Bridal · Party · Kids · Occasions</p></div>
+        <div class="svc-item"><div class="svc-name">Kids Makeup<small>Stage, function & events</small></div><div class="svc-price">₹1,000</div></div>
+        <div class="svc-item"><div class="svc-name">Party Glam<small>Full face, eyes & lips</small></div><div class="svc-price">₹2,000</div></div>
+        <div class="svc-item"><div class="svc-name">Function Look<small>Puberty, baby shower & more</small></div><div class="svc-price">₹4,000</div></div>
+        <div class="svc-item"><div class="svc-name">Engagement / Reception<small>HD makeup + saree + hair</small></div><div class="svc-price">₹6,000</div></div>
+        <div class="svc-item"><div class="svc-name">HD Airbrush Party<small>Long-lasting airbrush glam</small></div><div class="svc-price">₹8,000</div></div>
+        <div class="svc-item"><div class="svc-name">Traditional Bridal<small>Classic bridal look</small></div><div class="svc-price">₹12,000</div></div>
+        <div class="svc-item"><div class="svc-name">HD Airbrush Bridal<small>Premium flawless all-day bridal</small></div><div class="svc-price">₹16,500</div></div>
+      </div>
+    </div>
+    <div class="svc-panel" id="svc-hair">
+      <div class="g-card">
+        <div class="g-card-hd"><h3>💇 Hair Styling</h3><p>Basic · Party · Bridal</p></div>
+        <div class="svc-item"><div class="svc-name">Basic Hair Style<small>Everyday elegant look</small></div><div class="svc-price">₹2,000</div></div>
+        <div class="svc-item"><div class="svc-name">Party Hair Do<small>Curls, braids & party styles</small></div><div class="svc-price">₹3,000</div></div>
+        <div class="svc-item"><div class="svc-name">Bridal Hair Do<small>Full bridal hair with accessories</small></div><div class="svc-price">₹5,000</div></div>
+      </div>
+    </div>
+    <div class="svc-panel" id="svc-saree">
+      <div class="g-card">
+        <div class="g-card-hd"><h3>🥻 Saree Draping</h3><p>Pre-Pleating · Draping · Box Folding</p></div>
+        <div class="svc-item"><div class="svc-name">Classic Saree Draping<small>Traditional Tamil & Nivi style</small></div><div class="svc-price">₹1,000</div></div>
+        <div class="svc-item"><div class="svc-name">Saree Pre-Pleating<small>Perfect crisp pleats, ready to wear</small></div><div class="svc-price">₹800</div></div>
+        <div class="svc-item"><div class="svc-name">Box Folding<small>Neat storage fold for sarees</small></div><div class="svc-price">₹500</div></div>
+        <div class="svc-item"><div class="svc-name">Bridal Saree / Lehenga<small>Full bridal draping with styling</small></div><div class="svc-price">₹2,500</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ COURSES ═══════════════ -->
+<div class="page" id="page-courses">
+  <div class="sec-hd"><p class="sec-lbl">🎓 Platinum Glam Academy</p><h2 class="sec-title">Our <em>Courses</em></h2></div>
+  <div style="padding:0 20px 20px;">
+    <div class="cc">
+      <div class="cc-top">
+        <div class="cc-badge">⭐ Premium Package</div>
+        <h3>8-Day Complete Course</h3>
+        <p>Makeup · Hair Styling · Saree Specialist</p>
+        <div class="cc-price-row"><div class="cc-price">₹8,000</div><div class="cc-days">⏱ 8 Days</div></div>
+      </div>
+      <div class="cc-body">
+        <div class="cc-includes">✦ What You'll Learn</div>
+        <ul class="cc-list">
+          <li>5 Types of Makeup incl. Sweat Proof & Waterproof</li>
+          <li>5 Types of Hairstyles — Buns, Braids, Curls & more</li>
+          <li>Saree Pre-Pleating, Draping & Box Folding</li>
+          <li>Skin Prep, Contouring & Product Knowledge</li>
+          <li>Bridal, Party, HD & Airbrush Techniques</li>
+          <li>Client Interaction & Portfolio Building</li>
+          <li>Certificate of Completion 🎓</li>
+        </ul>
+        <a class="gold-btn" style="margin-top:14px;" href="https://wa.me/919342812428?text=Hi%20Shiv!%20I%27m%20interested%20in%20the%208-Day%20Premium%20Course%20(₹8000)%20🌸" target="_blank">✦ Enroll Now — ₹8,000</a>
+      </div>
+    </div>
+    <div class="cc">
+      <div class="cc-top">
+        <div class="cc-badge" style="background:linear-gradient(135deg,#3a1a6e,#7c3aed);color:#fff;">🌸 Starter Package</div>
+        <h3>5-Day Foundation Course</h3>
+        <p>Makeup & Hair Styling Essentials</p>
+        <div class="cc-price-row"><div class="cc-price">₹4,000</div><div class="cc-days">⏱ 5 Days</div></div>
+      </div>
+      <div class="cc-body">
+        <div class="cc-includes">✦ What You'll Learn</div>
+        <ul class="cc-list">
+          <li>2 Types of Makeup — Sweat Proof & Waterproof</li>
+          <li>3 Hairstyles — Buns, Open Style & Braids</li>
+          <li>Saree Pre-Pleating, Draping & Box Folding</li>
+          <li>Skin Preparation & Basic Techniques</li>
+          <li>Foundation, Contouring & Eye Makeup</li>
+          <li>Certificate of Completion 🎓</li>
+        </ul>
+        <a class="gold-btn" style="margin-top:14px;background:linear-gradient(135deg,#3a1a6e,#7c3aed);color:#fff;" href="https://wa.me/919342812428?text=Hi%20Shiv!%20I%27m%20interested%20in%20the%205-Day%20Foundation%20Course%20(₹4000)%20🌸" target="_blank">✦ Enroll Now — ₹4,000</a>
+      </div>
+    </div>
+    <div style="text-align:center;padding:4px 0;font-size:12px;color:var(--muted);">📞 New batch every month · Call <strong style="color:var(--gold)">9342812428</strong></div>
+  </div>
+</div>
+
+<!-- ═══════════════ CONTACT ═══════════════ -->
+<div class="page" id="page-contact">
+  <div class="sec-hd"><p class="sec-lbl">💌 Reach Us</p><h2 class="sec-title">Get In <em>Touch</em></h2></div>
+  <div style="padding:0 20px 20px;">
+    <div class="contact-card">
+      <a class="contact-item" href="tel:+919342812428">
+        <div class="ci-icon">📞</div>
+        <div class="ci-info"><div class="ci-label">Call Us</div><div class="ci-val">+91 9342812428</div><div class="ci-sub">Tap to call directly</div></div>
+        <div class="ci-arrow">›</div>
+      </a>
+      <a class="contact-item" href="https://wa.me/919342812428?text=Hi%20Shiv!%20I%27d%20like%20to%20book%20an%20appointment%20🌸" target="_blank">
+        <div class="ci-icon">💬</div>
+        <div class="ci-info"><div class="ci-label">WhatsApp / Book</div><div class="ci-val">Chat & Book</div><div class="ci-sub">Tap to open WhatsApp</div></div>
+        <div class="ci-arrow">›</div>
+      </a>
+      <a class="contact-item" href="https://www.instagram.com/platinumglambyshiv" target="_blank">
+        <div class="ci-icon">📸</div>
+        <div class="ci-info"><div class="ci-label">Instagram</div><div class="ci-val">@platinumglambyshiv</div><div class="ci-sub">View our portfolio</div></div>
+        <div class="ci-arrow">›</div>
+      </a>
+    </div>
+    <div class="contact-card">
+      <div class="contact-item" style="cursor:default;">
+        <div class="ci-icon">📍</div>
+        <div class="ci-info"><div class="ci-label">Location</div><div class="ci-val">Pondicherry</div><div class="ci-sub">Also serving Chennai</div></div>
+      </div>
+      <div class="contact-item" style="cursor:default;">
+        <div class="ci-icon">🕙</div>
+        <div class="ci-info"><div class="ci-label">Service Hours</div><div class="ci-val">9 AM – 9 PM</div><div class="ci-sub">Advance booking recommended</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ STUDENTS ═══════════════ -->
+<div class="page" id="page-students">
+  <div class="sec-hd"><p class="sec-lbl">👩‍🎓 Academy Records</p><h2 class="sec-title">Our <em>Students</em></h2></div>
+  <div class="students-wrap">
+    <div style="display:flex;gap:10px;margin-bottom:16px;">
+      <button class="gold-btn" style="flex:1;padding:11px;" onclick="openAddStudent()">+ Add Student</button>
+    </div>
+    <div class="search-wrap search-bar" style="padding:0 0 14px 0;">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search by name or phone..." oninput="renderStudents()">
+    </div>
+    <div id="studentsList"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ CERTIFICATE ═══════════════ -->
+<div class="page" id="page-cert">
+  <div class="sec-hd"><p class="sec-lbl">🎓 Platinum Glam Academy</p><h2 class="sec-title">Course <em>Certificate</em></h2></div>
+  <div class="cert-page-wrap">
+    <!-- CERT CONTROLS -->
+    <div class="g-card" style="padding:18px 20px;margin-bottom:18px;">
+      <div class="cg"><label>Student Name</label><input type="text" id="certStudentName" placeholder="e.g. Priya Lakshmi"></div>
+      <div class="grid2">
+        <div class="cg"><label>Certificate No.</label><input type="text" id="certNo" placeholder="PGS-2026-001"></div>
+        <div class="cg"><label>Course</label>
+          <select id="courseType">
+            <option value="8">8-Day Premium Course</option>
+            <option value="5">5-Day Foundation Course</option>
+          </select>
+        </div>
+        <div class="cg"><label>Completion Date</label><input type="date" id="certDate"></div>
+      </div>
+      <button class="gold-btn" style="margin-top:6px;" onclick="generateCert()">✦ Generate Certificate</button>
+    </div>
+
+    <!-- CERT DISPLAY -->
+    <div class="cert-preview-outer">
+      <div id="certNoData" class="cert-no-data">
+        <div class="nd-icon">🎓</div>
+        <p style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--gold);margin-bottom:8px;">Certificate of Completion</p>
+        <p>Fill in the details above and tap Generate Certificate to create a downloadable certificate 💛</p>
+      </div>
+      <div id="certDisplay" style="display:none;">
+        <!-- CERTIFICATE HTML (rendered for capture) -->
+        <div class="certificate" id="certElement">
+          <svg class="corner-ornament tl" viewBox="0 0 40 40"><path d="M2 38 L2 2 L38 2" stroke="#c9a84c" stroke-width="2.5" fill="none"/><circle cx="2" cy="2" r="4" fill="#c9a84c"/></svg>
+          <svg class="corner-ornament tr" viewBox="0 0 40 40"><path d="M2 38 L2 2 L38 2" stroke="#c9a84c" stroke-width="2.5" fill="none"/><circle cx="2" cy="2" r="4" fill="#c9a84c"/></svg>
+          <svg class="corner-ornament bl" viewBox="0 0 40 40"><path d="M2 38 L2 2 L38 2" stroke="#c9a84c" stroke-width="2.5" fill="none"/><circle cx="2" cy="2" r="4" fill="#c9a84c"/></svg>
+          <svg class="corner-ornament br" viewBox="0 0 40 40"><path d="M2 38 L2 2 L38 2" stroke="#c9a84c" stroke-width="2.5" fill="none"/><circle cx="2" cy="2" r="4" fill="#c9a84c"/></svg>
+          <div class="cert-inner-border">
+            <div class="cert-banner">
+              <div class="cert-logo-text">Platinum Glam by Shiv</div>
+              <div class="cert-logo-orn">✦ Professional Beauty Academy · Pondicherry ✦</div>
+            </div>
+            <div class="cert-body">
+              <div class="cert-presents">This is to proudly certify that</div>
+              <div class="cert-student-name" id="c-name">Student Name</div>
+              <div class="cert-uline"></div>
+              <div class="cert-completed">has successfully completed the</div>
+              <div class="cert-course-title" id="c-course">Course Name</div>
+              <div class="cert-dur-strip"><span class="cert-dur-badge" id="c-dur">⏱ 8 Days Training</span></div>
+              <div class="cert-meta">
+                <div class="cm-it"><div class="cm-lbl">Completion Date</div><div class="cm-val" id="c-date">—</div></div>
+                <div class="cm-it"><div class="cm-lbl">Certificate No.</div><div class="cm-val" id="c-no">—</div></div>
+                <div class="cm-it"><div class="cm-lbl">Issued By</div><div class="cm-val">Platinum Glam</div></div>
+              </div>
+              <div class="sig-sec">
+                <div class="sig-blk">
+                  <div class="sig-line"></div>
+                  <div class="sig-nm">Shivaranjini Manoharan</div>
+                  <div class="sig-rl">Founder & Lead Trainer</div>
+                </div>
+                <div class="sig-blk">
+                  <div class="sig-line"></div>
+                  <div class="sig-nm" id="c-sig-nm">Student Signature</div>
+                  <div class="sig-rl">Course Completion</div>
+                </div>
+              </div>
+            </div>
+            <div class="cert-footer">✦ Platinum Glam by Shiv · Pondicherry · 9342812428 · @platinumglambyshiv ✦</div>
+          </div>
+        </div>
+        <!-- DOWNLOAD BUTTONS -->
+        <div class="dl-row">
+          <button class="gold-btn" id="btnDL" onclick="downloadCert()" style="flex:1;">⬇ Download Certificate</button>
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-top:8px;text-align:center;">Downloads as PNG image — share online or print 🖨</div>
+        <div class="dl-status" id="dlStatus"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ BOTTOM NAV ═══════════════ -->
+<div class="bottom-nav">
+  <button class="bn-item active" onclick="showPage('home',this)"><div class="bn-icon">🏠</div><div class="bn-label">Home</div></button>
+  <button class="bn-item" onclick="showPage('services',this)"><div class="bn-icon">💄</div><div class="bn-label">Services</div></button>
+  <button class="bn-item" onclick="showPage('courses',this)"><div class="bn-icon">🎓</div><div class="bn-label">Courses</div></button>
+  <button class="bn-item" onclick="showPage('contact',this)"><div class="bn-icon">💌</div><div class="bn-label">Contact</div></button>
+
+</div>
+
+<!-- ═══════════════ ADD/EDIT STUDENT MODAL ═══════════════ -->
+<div class="modal-overlay" id="studentModal">
+  <div class="modal">
+    <div class="modal-hd">
+      <h3 id="modalTitle">Add Student</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <input type="hidden" id="editId">
+    <div class="grid2">
+      <div class="cg"><label>Full Name *</label><input type="text" id="sName" placeholder="Priya Lakshmi"></div>
+      <div class="cg"><label>Phone Number</label><input type="tel" id="sPhone" placeholder="9876543210"></div>
+    </div>
+    <div class="cg"><label>Course Package *</label>
+      <select id="sCourse">
+        <option value="8-Day Premium Course">8-Day Premium Course (₹8,000)</option>
+        <option value="5-Day Foundation Course">5-Day Foundation Course (₹4,000)</option>
+      </select>
+    </div>
+    <div class="grid2">
+      <div class="cg"><label>Date of Joining</label><input type="date" id="sJoin"></div>
+      <div class="cg"><label>Date of Completion</label><input type="date" id="sComplete"></div>
+    </div>
+    <div class="cg"><label>Notes (optional)</label><textarea id="sNotes" rows="2" placeholder="Any extra info..."></textarea></div>
+    <button class="gold-btn" onclick="saveStudent()">✦ Save Student</button>
+  </div>
+</div>
+
+<script>
+// ═══ ADMIN & CERT CODES ═══
+const ADMIN_PASS='shiv2024';
+const CERT_CODE='certificate@1234';
+let adminUnlocked=false;
+
+function checkAdminPwd(){
+  const v=document.getElementById('adminPwdInput').value;
+  if(v===ADMIN_PASS){
+    adminUnlocked=true;
+    document.getElementById('adminLockModal').classList.remove('open');
+    document.getElementById('adminPwdInput').value='';
+    _goStudents();
+  } else {
+    const e=document.getElementById('adminPwdErr');e.style.display='block';
+    setTimeout(()=>e.style.display='none',2500);
+  }
+}
+
+function checkCertCode(){
+  const v=document.getElementById('certCodeInput').value;
+  if(v===CERT_CODE){
+    document.getElementById('certCodeModal').classList.remove('open');
+    document.getElementById('certCodeInput').value='';
+    _doCertDownload();
+  } else {
+    const e=document.getElementById('certCodeErr');e.style.display='block';
+    setTimeout(()=>e.style.display='none',2500);
+  }
+}
+
+// Load students and stats on page load (no gate)
+loadStudents(); updateStats();
+
+// ═══ TOAST ═══
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// ═══ PAGE NAV ═══
+function showPage(id,el){
+  if(id==='students'){
+    if(!adminUnlocked){
+      document.getElementById('adminLockModal').classList.add('open');
+      document.getElementById('adminPwdInput').value='';
+      document.getElementById('adminPwdErr').style.display='none';
+      return;
+    }
+    _goStudents();return;
+  }
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(el)el.classList.add('active');
+  window.scrollTo(0,0);
+}
+function _goStudents(){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-students').classList.add('active');
+  const btns=document.querySelectorAll('.bn-item');
+  btns[4].classList.add('active');
+  window.scrollTo(0,0);
+  renderStudents();
+}
+
+// ═══ SERVICE TABS ═══
+function showSvc(id,el){
+  document.querySelectorAll('.svc-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.svc-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('svc-'+id).classList.add('active');
+  el.classList.add('active');
+}
+
+// ═══ STUDENTS DATA (in-memory, persisted via window.storage) ═══
+let students=[];
+
+async function loadStudents(){
+  try{
+    const r=await window.storage.get('pgb_students');
+    if(r&&r.value)students=JSON.parse(r.value);
+  }catch(e){students=[];}
+  updateStats();renderStudents();
+}
+
+async function saveStudents(){
+  try{await window.storage.set('pgb_students',JSON.stringify(students));}catch(e){}
+}
+
+function updateStats(){
+  document.getElementById('statStudents').textContent=students.length;
+  const done=students.filter(s=>s.complete&&s.complete.length>0).length;
+  document.getElementById('statCompleted').textContent=done;
+}
+
+function renderStudents(){
+  const q=(document.getElementById('searchInput')||{value:''}).value.toLowerCase();
+  const list=document.getElementById('studentsList');
+  const filtered=students.filter(s=>
+    s.name.toLowerCase().includes(q)||(s.phone||'').includes(q)
+  );
+  if(filtered.length===0){
+    list.innerHTML=`<div class="empty-state"><div class="es-icon">👩‍🎓</div><p>${students.length===0?'No students added yet.<br>Tap + Add Student to get started.':'No results found.'}</p></div>`;
+    return;
+  }
+  list.innerHTML=filtered.map(s=>`
+    <div class="student-card">
+      <div class="sc-name">${s.name}</div>
+      <div class="sc-info">
+        ${s.phone?`📞 ${s.phone}<br>`:''}
+        📅 Joined: ${s.join||'—'} &nbsp;|&nbsp; ✅ Completed: ${s.complete||'—'}
+        ${s.notes?`<br>📝 ${s.notes}`:''}
+      </div>
+      <div class="sc-badge">${s.course}</div>
+      <div class="sc-actions">
+        <button class="sc-btn edit" onclick="openEditStudent('${s.id}')">✏ Edit</button>
+        <button class="sc-btn cert" onclick="fillCertFromStudent('${s.id}')">📜 Cert</button>
+        <button class="sc-btn del" onclick="deleteStudent('${s.id}')">🗑 Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openAddStudent(){
+  document.getElementById('modalTitle').textContent='Add Student';
+  document.getElementById('editId').value='';
+  ['sName','sPhone','sNotes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('sCourse').value='8-Day Premium Course';
+  document.getElementById('sJoin').valueAsDate=new Date();
+  document.getElementById('sComplete').value='';
+  document.getElementById('studentModal').classList.add('open');
+}
+
+function openEditStudent(id){
+  const s=students.find(x=>x.id===id);if(!s)return;
+  document.getElementById('modalTitle').textContent='Edit Student';
+  document.getElementById('editId').value=id;
+  document.getElementById('sName').value=s.name||'';
+  document.getElementById('sPhone').value=s.phone||'';
+  document.getElementById('sCourse').value=s.course||'8-Day Premium Course';
+  document.getElementById('sJoin').value=s.join||'';
+  document.getElementById('sComplete').value=s.complete||'';
+  document.getElementById('sNotes').value=s.notes||'';
+  document.getElementById('studentModal').classList.add('open');
+}
+
+function closeModal(){document.getElementById('studentModal').classList.remove('open');}
+
+function saveStudent(){
+  const name=document.getElementById('sName').value.trim();
+  if(!name){toast('❌ Name is required');return;}
+  const id=document.getElementById('editId').value;
+  const data={
+    id:id||'s_'+Date.now(),
+    name,
+    phone:document.getElementById('sPhone').value.trim(),
+    course:document.getElementById('sCourse').value,
+    join:document.getElementById('sJoin').value,
+    complete:document.getElementById('sComplete').value,
+    notes:document.getElementById('sNotes').value.trim()
+  };
+  if(id){const i=students.findIndex(x=>x.id===id);if(i>-1)students[i]=data;}
+  else students.unshift(data);
+  saveStudents();updateStats();renderStudents();closeModal();
+  toast(id?'✅ Student updated!':'✅ Student added!');
+}
+
+function deleteStudent(id){
+  if(!confirm('Delete this student? This cannot be undone.'))return;
+  students=students.filter(x=>x.id!==id);
+  saveStudents();updateStats();renderStudents();toast('🗑 Student deleted.');
+}
+
+function fillCertFromStudent(id){
+  const s=students.find(x=>x.id===id);if(!s)return;
+  document.getElementById('certStudentName').value=s.name;
+  document.getElementById('courseType').value=s.course.startsWith('8')?'8':'5';
+  if(s.complete)document.getElementById('certDate').value=s.complete;
+  // Auto cert number
+  const idx=students.findIndex(x=>x.id===id)+1;
+  document.getElementById('certNo').value='PGS-2026-'+String(idx).padStart(3,'0');
+  showPage('cert',document.querySelectorAll('.bn-item')[5]);
+  toast('✅ Student data loaded in Certificate!');
+}
+
+// ═══ CERTIFICATE ═══
+document.getElementById('certDate').valueAsDate=new Date();
+
+const COURSE_NAMES={
+  8:'8-Day Premium Course in\nMakeup Artistry · Hair Styling\nSaree Draping, Pre-Pleating & Box Folding',
+  5:'5-Day Foundation Course in\nMakeup Artistry · Hair Styling\nSaree Draping, Pre-Pleating & Box Folding'
+};
+
+function fmtDate(v){
+  if(!v)return'—';
+  const d=new Date(v+'T00:00:00');
+  return d.toLocaleDateString('en-IN',{day:'2-digit',month:'long',year:'numeric'});
+}
+
+function generateCert(){
+  const name=document.getElementById('certStudentName').value.trim()||'Student Name';
+  const no=document.getElementById('certNo').value.trim()||'—';
+  const days=document.getElementById('courseType').value;
+  const dateV=document.getElementById('certDate').value;
+  document.getElementById('c-name').textContent=name;
+  document.getElementById('c-course').textContent=COURSE_NAMES[days];
+  document.getElementById('c-dur').textContent='⏱ '+days+' Days Training';
+  document.getElementById('c-date').textContent=fmtDate(dateV);
+  document.getElementById('c-no').textContent=no;
+  document.getElementById('c-sig-nm').textContent=name;
+  document.getElementById('certNoData').style.display='none';
+  document.getElementById('certDisplay').style.display='block';
+  toast('✅ Certificate generated!');
+}
+
+// ═══ DOWNLOAD — uses canvas + data URL trick for mobile ═══
+function showDlStatus(msg){
+  const s=document.getElementById('dlStatus');
+  s.textContent=msg;s.style.display='block';
+  setTimeout(()=>s.style.display='none',4000);
+}
+
+function downloadCert(){
+  document.getElementById('certCodeModal').classList.add('open');
+  document.getElementById('certCodeInput').value='';
+  document.getElementById('certCodeErr').style.display='none';
+}
+
+async function _doCertDownload(){
+  const btn=document.getElementById('btnDL');
+  btn.textContent='⏳ Preparing...';btn.disabled=true;
+  showDlStatus('Rendering certificate... 🌸');
+  try{
+    const el=document.getElementById('certElement');
+    // Use html2canvas via CDN
+    const script=document.createElement('script');
+    script.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+    document.head.appendChild(script);
+    await new Promise((res,rej)=>{
+      if(window.html2canvas){res();return;}
+      script.onload=res;script.onerror=rej;
+    });
+    const canvas=await window.html2canvas(el,{
+      scale:3,useCORS:true,allowTaint:true,backgroundColor:'#ffffff',logging:false,
+      width:el.offsetWidth,height:el.offsetHeight
+    });
+    const name=(document.getElementById('certStudentName').value.trim()||'Certificate').replace(/\s+/g,'_');
+    const imgData=canvas.toDataURL('image/png');
+    // Try direct download link first (desktop/Android)
+    const a=document.createElement('a');
+    a.href=imgData;
+    a.download='PlatinumGlam_'+name+'.png';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+    // Also open in new tab for iOS (where download attr doesn't work)
+    setTimeout(()=>{
+      const w=window.open();
+      if(w){
+        w.document.write('<html><body style="margin:0;background:#000;"><img src="'+imgData+'" style="width:100%;max-width:900px;display:block;margin:auto;"><p style="color:#c9a84c;text-align:center;font-family:sans-serif;padding:10px;">Long-press the image → Save to Photos / Download 📥</p></body></html>');
+        w.document.close();
+      }
+    },500);
+    showDlStatus('✅ Done! If file didn\'t save, long-press image in new tab → Save 📥');
+    toast('✅ Certificate ready!');
+  }catch(e){
+    showDlStatus('❌ Error: '+e.message);
+    toast('❌ Download failed');
+  }
+  btn.textContent='⬇ Download Certificate';btn.disabled=false;
+}
+</script>
+</body>
+</html>
